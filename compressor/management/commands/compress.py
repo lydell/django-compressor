@@ -2,6 +2,7 @@
 import os
 import sys
 
+from collections import OrderedDict
 from fnmatch import fnmatch
 from optparse import make_option
 
@@ -10,7 +11,6 @@ from django.core.management.base import NoArgsCommand, CommandError
 import django.template
 from django.template import Context
 from django.utils import six
-from django.utils.datastructures import SortedDict
 from django.utils.importlib import import_module
 from django.template.loader import get_template  # noqa Leave this in to preload template locations
 
@@ -176,7 +176,7 @@ class Command(NoArgsCommand):
 
         parser = self.__get_parser(engine)
 
-        compressor_nodes = SortedDict()
+        compressor_nodes = OrderedDict()
         for template_name in templates:
             try:
                 template = parser.parse(template_name)
@@ -221,7 +221,7 @@ class Command(NoArgsCommand):
         log.write("Compressing... ")
         count = 0
         results = []
-        offline_manifest = SortedDict()
+        offline_manifest = OrderedDict()
         init_context = parser.get_init_context(settings.COMPRESS_OFFLINE_CONTEXT)
 
         for template, nodes in compressor_nodes.items():
